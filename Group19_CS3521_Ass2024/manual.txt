@@ -1,0 +1,17 @@
+MyShell Help
+-------------
+mycd - Change directory to root if the user is root, otherwise show current directory.
+myclr - Clear the screen.
+mydir - List the contents of the current directory.
+myenviron - List all environment strings.
+myecho - Display a test message.
+myhelp - Display the user manual.
+mypause - Pause the shell until 'Enter' is pressed.
+myquit - Quit the shell.
+myone - Custom command that generates a random password.
+mytwo() - Display disk usage.
+
+
+
+
+

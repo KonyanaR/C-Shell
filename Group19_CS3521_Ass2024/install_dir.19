@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Get the current user's username
+username=$(whoami)
+
+# Prompt the user to enter the directory where they unzipped the program files
+echo "Please enter the directory where you unzipped the program files (N.B remember to include the folder name /Group19_CS3521_Ass2024)"
+read -r install_dir
+
+# Set the MY_EXECUTABLE_PATH environment variable to the provided directory
+export MY_EXECUTABLE_PATH="$install_dir"
+
+# Check if Myshell.desktop exists
+desktop_file="$install_dir/Myshell.desktop"
+
+if [ ! -f "$desktop_file" ]; then
+    echo "Myshell.desktop does not exist. Creating it..."
+    echo "[Desktop Entry]" > "$desktop_file"
+    echo "Type=Application" >> "$desktop_file"
+    echo "Name=Myshell" >> "$desktop_file"
+    echo "Exec=$MY_EXECUTABLE_PATH/myshellex" >> "$desktop_file"
+    echo "Icon=$MY_EXECUTABLE_PATH/icon.jpeg" >> "$desktop_file"
+    echo "Terminal=true" >> "$desktop_file"
+    
+    # Make the desktop file executable
+    chmod +x "$desktop_file"
+fi
+
+# Set the directory for user's local applications
+user_applications_dir="/home/$username/.local/share/applications/"
+
+# Copy the manual file to the same directory as the .desktop file
+manual_file="$install_dir/manual.txt"
+if [ -f "$manual_file" ]; then
+    echo "Copying the manual file to the same directory as the .desktop file..."
+    cp "$manual_file" "$install_dir"
+else
+    echo "Manual file not found in $install_dir."
+fi
+
+# Move the .desktop file and manual file to the user's local applications directory
+echo "Moving the .desktop file and manual file to $user_applications_dir..."
+mkdir -p "$user_applications_dir"
+mv "$desktop_file" "$user_applications_dir"
+
+
+# Run the Makefile
+echo "Running the Makefile..."
+cd "$install_dir" || exit
+make
+
+echo "Setup complete. You can now run your program."
+
